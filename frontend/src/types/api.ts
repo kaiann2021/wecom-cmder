@@ -1,6 +1,36 @@
 /**
  * API 客户端类型定义
+ *
+ * 更新记录:
+ * - update-001: 添加认证相关类型
  */
+
+// ========== 认证相关（update-001） ==========
+
+/**
+ * 登录请求
+ */
+export interface LoginRequest {
+  username: string
+  password: string
+}
+
+/**
+ * Token 响应
+ */
+export interface TokenResponse {
+  access_token: string
+  token_type: string
+}
+
+/**
+ * 用户信息
+ */
+export interface UserInfo {
+  username: string
+}
+
+// ========== 企业微信配置 ==========
 
 // 企业微信配置
 export interface WeChatConfig {

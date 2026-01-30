@@ -2,6 +2,9 @@
 
 根据 plan.md: spec/01-核心功能/wecom-cmder/plan.md
 章节: 5.4 命令管理接口
+
+更新记录:
+- update-001: 添加 API 鉴权
 """
 
 import logging
@@ -9,6 +12,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
+from app.core.security import verify_token
 from app.models.command import Command as DBCommand
 from app.schemas.command import (
     CommandListResponse,
@@ -26,11 +30,16 @@ router = APIRouter()
 
 
 @router.get("", response_model=CommandListResponse)
-async def get_commands(db: Session = Depends(get_db)):
+async def get_commands(
+    db: Session = Depends(get_db),
+    _: dict = Depends(verify_token)  # update-001: 添加 Token 验证
+):
     """获取命令列表
 
     根据 plan.md: spec/01-核心功能/wecom-cmder/plan.md
     章节: 5.4.1 获取命令列表
+
+    update-001: 需要认证
 
     Args:
         db: 数据库会话
@@ -68,7 +77,10 @@ async def get_commands(db: Session = Depends(get_db)):
 
 @router.put("/{command_id}")
 async def update_command(
-    command_id: str, update: CommandUpdate, db: Session = Depends(get_db)
+    command_id: str,
+    update: CommandUpdate,
+    db: Session = Depends(get_db),
+    _: dict = Depends(verify_token)  # update-001: 添加 Token 验证
 ):
     """更新命令
 
@@ -107,11 +119,16 @@ async def update_command(
 
 
 @router.post("/sync-menu", response_model=CommandSyncMenuResponse)
-async def sync_menu(db: Session = Depends(get_db)):
+async def sync_menu(
+    db: Session = Depends(get_db),
+    _: dict = Depends(verify_token)  # update-001: 添加 Token 验证
+):
     """同步菜单到企业微信
 
     根据 plan.md: spec/01-核心功能/wecom-cmder/plan.md
     章节: 5.4.3 同步菜单
+
+    update-001: 需要认证
 
     Args:
         db: 数据库会话

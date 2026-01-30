@@ -1,15 +1,18 @@
 <template>
   <v-app>
-    <v-app-bar color="primary" prominent>
+    <!-- 只在已登录时显示导航栏（update-001） -->
+    <v-app-bar v-if="isAuthenticated" color="primary" prominent>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>WeCom Commander</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon>mdi-cog</v-icon>
+      <!-- 登出按钮（update-001） -->
+      <v-btn icon @click="handleLogout" title="登出">
+        <v-icon>mdi-logout</v-icon>
       </v-btn>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" app>
+    <!-- 只在已登录时显示侧边栏（update-001） -->
+    <v-navigation-drawer v-if="isAuthenticated" v-model="drawer" app>
       <v-list>
         <v-list-item
           v-for="item in menuItems"
@@ -34,9 +37,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { apiClient } from '@/api/client'
+
+const router = useRouter()
+const route = useRoute()
 
 const drawer = ref(true)
+
+// 检查是否已登录（update-001）
+const isAuthenticated = computed(() => {
+  return !!localStorage.getItem('access_token') && route.path !== '/login'
+})
 
 const menuItems = [
   { title: '仪表盘', path: '/', icon: 'mdi-view-dashboard' },
@@ -44,4 +57,9 @@ const menuItems = [
   { title: '消息历史', path: '/messages', icon: 'mdi-message-text' },
   { title: '命令管理', path: '/commands', icon: 'mdi-console' },
 ]
+
+// 登出处理（update-001）
+const handleLogout = () => {
+  apiClient.logout()
+}
 </script>

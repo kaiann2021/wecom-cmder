@@ -2,6 +2,9 @@
 
 根据 plan.md: spec/01-核心功能/wecom-cmder/plan.md
 章节: 2.2 目录结构 - app/main.py
+
+更新记录:
+- update-001: 添加用户配置初始化
 """
 
 import logging
@@ -11,6 +14,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 
 from app.core.database import init_db
+from app.core.config import init_users
 from app.api.router import api_router
 
 # 配置日志
@@ -33,6 +37,11 @@ async def lifespan(app: FastAPI):
     logger.info("正在初始化数据库...")
     init_db()
     logger.info("数据库初始化完成")
+
+    # update-001: 初始化用户配置
+    logger.info("正在初始化用户配置...")
+    init_users()
+    logger.info("用户配置初始化完成")
 
     yield
 

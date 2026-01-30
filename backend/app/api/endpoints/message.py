@@ -2,6 +2,9 @@
 
 根据 plan.md: spec/01-核心功能/wecom-cmder/plan.md
 章节: 5.3 消息管理接口
+
+更新记录:
+- update-001: 添加 API 鉴权
 """
 
 import logging
@@ -10,6 +13,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import and_, or_
 
 from app.core.database import get_db
+from app.core.security import verify_token
 from app.models.message import Message
 from app.schemas.message import (
     MessageSend,
@@ -28,12 +32,16 @@ router = APIRouter()
 
 @router.post("/send", response_model=MessageSendResponse)
 async def send_message(
-    message: MessageSend, db: Session = Depends(get_db)
+    message: MessageSend,
+    db: Session = Depends(get_db),
+    _: dict = Depends(verify_token)  # update-001: 添加 Token 验证
 ):
     """发送消息
 
     根据 plan.md: spec/01-核心功能/wecom-cmder/plan.md
     章节: 5.3.1 发送消息
+
+    update-001: 需要认证
 
     Args:
         message: 消息内容
@@ -96,11 +104,14 @@ async def get_messages(
     start_time: int = Query(None, description="开始时间（时间戳）"),
     end_time: int = Query(None, description="结束时间（时间戳）"),
     db: Session = Depends(get_db),
+    _: dict = Depends(verify_token)  # update-001: 添加 Token 验证
 ):
     """获取消息历史
 
     根据 plan.md: spec/01-核心功能/wecom-cmder/plan.md
     章节: 5.3.2 消息历史
+
+    update-001: 需要认证
 
     Args:
         page: 页码

@@ -2,6 +2,9 @@
 
 根据 plan.md: spec/01-核心功能/wecom-cmder/plan.md
 章节: 5.2 配置管理接口
+
+更新记录:
+- update-001: 添加 API 鉴权
 """
 
 import logging
@@ -10,6 +13,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
+from app.core.security import verify_token
 from app.models.config import Config
 from app.schemas.config import (
     WeChatConfig,
@@ -25,11 +29,16 @@ router = APIRouter()
 
 
 @router.get("/wechat", response_model=WeChatConfigResponse)
-async def get_wechat_config(db: Session = Depends(get_db)):
+async def get_wechat_config(
+    db: Session = Depends(get_db),
+    _: dict = Depends(verify_token)  # update-001: 添加 Token 验证
+):
     """获取企业微信配置
 
     根据 plan.md: spec/01-核心功能/wecom-cmder/plan.md
     章节: 5.2.1 获取配置
+
+    update-001: 需要认证
 
     Args:
         db: 数据库会话
@@ -72,12 +81,16 @@ async def get_wechat_config(db: Session = Depends(get_db)):
 
 @router.put("/wechat", response_model=WeChatConfigResponse)
 async def update_wechat_config(
-    config: WeChatConfig, db: Session = Depends(get_db)
+    config: WeChatConfig,
+    db: Session = Depends(get_db),
+    _: dict = Depends(verify_token)  # update-001: 添加 Token 验证
 ):
     """更新企业微信配置
 
     根据 plan.md: spec/01-核心功能/wecom-cmder/plan.md
     章节: 5.2.2 更新配置
+
+    update-001: 需要认证
 
     Args:
         config: 企业微信配置
@@ -125,11 +138,16 @@ async def update_wechat_config(
 
 
 @router.post("/wechat/test", response_model=WeChatConfigTestResponse)
-async def test_wechat_config(config: WeChatConfigTest):
+async def test_wechat_config(
+    config: WeChatConfigTest,
+    _: dict = Depends(verify_token)  # update-001: 添加 Token 验证
+):
     """测试企业微信配置
 
     根据 plan.md: spec/01-核心功能/wecom-cmder/plan.md
     章节: 5.2.3 测试配置
+
+    update-001: 需要认证
 
     Args:
         config: 企业微信配置

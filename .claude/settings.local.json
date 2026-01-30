@@ -3,7 +3,8 @@
     "allow": [
       "Skill(intent-confirmation)",
       "Skill(spec-writer)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(python:*)"
     ]
   }
 }

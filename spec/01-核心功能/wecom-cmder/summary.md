@@ -1,14 +1,16 @@
 ---
 title: 企业微信指令管理系统-实现总结
 type: summary
-category: 01-核心功能
-status: 未确认
+category: 06-已归档
+status: 已归档
 created: 2026-01-30
+archived: 2026-01-30
 plan: "[[plan]]"
 tags:
   - spec
   - summary
   - wecom-cmder
+  - archived
 ---
 
 # 实现总结

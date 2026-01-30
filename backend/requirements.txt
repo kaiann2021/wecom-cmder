@@ -13,6 +13,10 @@ httpx==0.26.0
 # Crypto
 pycryptodome==3.19.1
 
+# Authentication (update-001)
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+
 # Validation
 pydantic==2.5.3
 pydantic-settings==2.1.0

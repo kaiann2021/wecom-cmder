@@ -3,10 +3,16 @@
  *
  * 根据 plan.md: spec/01-核心功能/wecom-cmder/plan.md
  * 章节: 5. API接口设计
+ *
+ * 更新记录:
+ * - update-001: 添加认证功能（登录接口、Token 拦截器、401 处理）
  */
 
 import axios, { type AxiosInstance } from 'axios'
 import type {
+  LoginRequest,
+  TokenResponse,
+  UserInfo,
   WeChatConfig,
   WeChatConfigUpdate,
   WeChatConfigTestResponse,
@@ -29,14 +35,59 @@ class ApiClient {
       },
     })
 
-    // 响应拦截器
+    // 请求拦截器：添加 Token（update-001）
+    this.client.interceptors.request.use(
+      (config) => {
+        const token = localStorage.getItem('access_token')
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`
+        }
+        return config
+      },
+      (error) => Promise.reject(error)
+    )
+
+    // 响应拦截器：处理 401 错误（update-001）
     this.client.interceptors.response.use(
       (response) => response,
       (error) => {
+        if (error.response?.status === 401) {
+          // Token 过期或无效，清除 Token 并跳转到登录页
+          localStorage.removeItem('access_token')
+          if (window.location.pathname !== '/login') {
+            window.location.href = '/login'
+          }
+        }
         console.error('API Error:', error)
         return Promise.reject(error)
       }
     )
+  }
+
+  // ========== 认证接口（update-001） ==========
+
+  /**
+   * 用户登录
+   */
+  async login(request: LoginRequest): Promise<TokenResponse> {
+    const response = await this.client.post('/auth/login', request)
+    return response.data
+  }
+
+  /**
+   * 获取当前用户信息
+   */
+  async getCurrentUser(): Promise<UserInfo> {
+    const response = await this.client.get('/auth/me')
+    return response.data
+  }
+
+  /**
+   * 登出
+   */
+  logout(): void {
+    localStorage.removeItem('access_token')
+    window.location.href = '/login'
   }
 
   // ========== 配置管理 ==========
