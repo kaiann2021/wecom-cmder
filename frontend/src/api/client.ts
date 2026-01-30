@@ -10,7 +10,6 @@ import type {
   WeChatConfig,
   WeChatConfigUpdate,
   WeChatConfigTestResponse,
-  Message,
   MessageSend,
   MessageListResponse,
   Command,
