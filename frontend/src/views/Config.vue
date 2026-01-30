@@ -199,10 +199,10 @@ const loadConfig = async () => {
     const config = await apiClient.getWeChatConfig()
     form.value = {
       corp_id: config.corp_id || '',
-      app_secret: '', // 不返回敏感信息
+      app_secret: '', // 敏感信息，后端不返回
       agent_id: config.agent_id || '',
-      token: config.token || '',
-      encoding_aes_key: config.encoding_aes_key || '',
+      token: config.has_token ? '******' : '', // 已配置则显示掩码
+      encoding_aes_key: config.has_encoding_aes_key ? '******' : '', // 已配置则显示掩码
       admin_users: config.admin_users || [],
     }
   } catch (error) {

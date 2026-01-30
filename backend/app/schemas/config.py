@@ -21,14 +21,19 @@ class WeChatConfig(BaseModel):
 
 
 class WeChatConfigResponse(BaseModel):
-    """企业微信配置响应模型（不包含敏感信息）"""
+    """企业微信配置响应模型（不包含敏感信息）
+    
+    安全说明：
+    - token 和 encoding_aes_key 等敏感信息不会返回
+    - 仅返回配置状态（是否已配置）
+    """
 
     corp_id: str
     agent_id: str
     proxy: str
     admin_users: List[str]
-    token: Optional[str] = None
-    encoding_aes_key: Optional[str] = None
+    has_token: bool = Field(default=False, description="是否已配置Token")
+    has_encoding_aes_key: bool = Field(default=False, description="是否已配置EncodingAESKey")
 
 
 class WeChatConfigTest(BaseModel):

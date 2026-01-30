@@ -7,7 +7,7 @@
             <v-toolbar-title>WeCom Commander 登录</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
-            <v-form ref="formRef" v-model="valid" @submit.prevent="handleLogin">
+            <v-form v-model="valid" @submit.prevent="handleLogin">
               <v-text-field
                 v-model="username"
                 label="用户名"
@@ -56,17 +56,13 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 import { apiClient } from '@/api/client'
-
-const router = useRouter()
 
 const username = ref('')
 const password = ref('')
 const valid = ref(false)
 const loading = ref(false)
 const error = ref('')
-const formRef = ref()
 
 const rules = {
   required: (value: string) => !!value || '此字段为必填项',
@@ -87,8 +83,8 @@ const handleLogin = async () => {
     // 存储 Token
     localStorage.setItem('access_token', response.access_token)
 
-    // 跳转到首页
-    router.push('/')
+    // 强制刷新页面以确保导航栏正确显示
+    window.location.href = '/'
   } catch (err: any) {
     error.value = err.response?.data?.detail || '登录失败，请检查用户名和密码'
   } finally {

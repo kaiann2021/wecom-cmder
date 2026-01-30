@@ -32,14 +32,15 @@ export interface UserInfo {
 
 // ========== 企业微信配置 ==========
 
-// 企业微信配置
+// 企业微信配置（响应）
+// 安全说明：敏感信息（token、encoding_aes_key）不会从后端返回
 export interface WeChatConfig {
   corp_id: string
   agent_id: string
   proxy: string
   admin_users: string[]
-  token?: string
-  encoding_aes_key?: string
+  has_token: boolean  // 是否已配置Token
+  has_encoding_aes_key: boolean  // 是否已配置EncodingAESKey
 }
 
 export interface WeChatConfigUpdate {

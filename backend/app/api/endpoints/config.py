@@ -39,6 +39,8 @@ async def get_wechat_config(
     章节: 5.2.1 获取配置
 
     update-001: 需要认证
+    
+    安全增强：不返回 token 和 encoding_aes_key 等敏感信息
 
     Args:
         db: 数据库会话
@@ -70,8 +72,8 @@ async def get_wechat_config(
             agent_id=configs.get("agent_id", ""),
             proxy="https://qyapi.weixin.qq.com",
             admin_users=configs.get("admin_users", []) if isinstance(configs.get("admin_users"), list) else [],
-            token=configs.get("token"),
-            encoding_aes_key=configs.get("encoding_aes_key"),
+            has_token=bool(configs.get("token")),
+            has_encoding_aes_key=bool(configs.get("encoding_aes_key")),
         )
 
     except Exception as e:
@@ -91,13 +93,15 @@ async def update_wechat_config(
     章节: 5.2.2 更新配置
 
     update-001: 需要认证
+    
+    安全增强：响应中不返回 token 和 encoding_aes_key 等敏感信息
 
     Args:
         config: 企业微信配置
         db: 数据库会话
 
     Returns:
-        WeChatConfigResponse: 更新后的配置
+        WeChatConfigResponse: 更新后的配置（不含敏感信息）
     """
     try:
         # 更新配置到数据库
@@ -127,8 +131,8 @@ async def update_wechat_config(
             agent_id=config.agent_id,
             proxy=config.proxy,
             admin_users=config.admin_users,
-            token=config.token,
-            encoding_aes_key=config.encoding_aes_key,
+            has_token=bool(config.token),
+            has_encoding_aes_key=bool(config.encoding_aes_key),
         )
 
     except Exception as e:
