@@ -1,0 +1,199 @@
+# ========================================
+# MoviePilot 源码（不提交）
+# ========================================
+MoviePilot-2/
+MoviePilot-Frontend-2/
+MoviePilot-Resources/
+
+# ========================================
+# Python
+# ========================================
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ========================================
+# Node.js / Frontend
+# ========================================
+# Dependencies
+node_modules/
+jspm_packages/
+
+# Production build
+dist/
+build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+
+# Testing
+coverage/
+
+# Misc
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ========================================
+# Docker
+# ========================================
+# Data directories
+data/
+logs/
+
+# Docker volumes
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# ========================================
+# Environment & Config
+# ========================================
+# Environment variables
+.env
+.env.production
+.env.staging
+
+# Local configuration
+*.local
+local_settings.py
+
+# ========================================
+# OS
+# ========================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ========================================
+# Logs
+# ========================================
+*.log
+logs/
+*.log.*
+
+# ========================================
+# Temporary files
+# ========================================
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+
+# ========================================
+# SSL Certificates (if any)
+# ========================================
+*.pem
+*.key
+*.crt
+*.csr
+ssl/
+
+# ========================================
+# Backup files
+# ========================================
+*.backup
+backup/
+backups/
+
+# ========================================
+# Spec 相关（可选，根据需要调整）
+# ========================================
+# 如果不想提交审查报告，取消下面的注释
+# spec/**/review.md
+
+# ========================================
+# 其他
+# ========================================
+# 编辑器临时文件
+*.sublime-project
+*.sublime-workspace
+
+# 压缩文件
+*.zip
+*.tar.gz
+*.rar
+*.7z

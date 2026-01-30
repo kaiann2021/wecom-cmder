@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(intent-confirmation)",
+      "Skill(spec-writer)",
+      "Bash(grep:*)"
+    ]
+  }
+}
