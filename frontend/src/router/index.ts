@@ -44,7 +44,7 @@ const router = createRouter({
 })
 
 // 路由守卫（update-001）
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   const token = localStorage.getItem('access_token')
   const requiresAuth = to.meta.requiresAuth !== false
 

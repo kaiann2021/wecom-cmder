@@ -38,10 +38,9 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { apiClient } from '@/api/client'
 
-const router = useRouter()
 const route = useRoute()
 
 const drawer = ref(true)
