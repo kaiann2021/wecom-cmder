@@ -6,6 +6,7 @@
 
 import logging
 from fastapi import APIRouter, Query, Request, Depends, HTTPException
+from fastapi.responses import PlainTextResponse
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
@@ -68,7 +69,7 @@ def get_wechat_config(db: Session = Depends(get_db)) -> WeChatConfig:
     )
 
 
-@router.get("/callback")
+@router.get("/callback", response_class=PlainTextResponse)
 async def wechat_verify(
     msg_signature: str = Query(..., description="消息签名"),
     timestamp: str = Query(..., description="时间戳"),
@@ -80,6 +81,8 @@ async def wechat_verify(
 
     根据 plan.md: spec/01-核心功能/wecom-cmder/plan.md
     章节: 5.1.1 URL验证
+    
+    重要：企业微信要求返回纯文本格式（text/plain），不能是 JSON
 
     Args:
         msg_signature: 消息签名
@@ -89,7 +92,7 @@ async def wechat_verify(
         db: 数据库会话
 
     Returns:
-        str: 解密后的echostr（纯文本）
+        PlainTextResponse: 解密后的echostr（纯文本）
     """
     try:
         # 获取配置
@@ -109,8 +112,10 @@ async def wechat_verify(
         # 验证URL
         reply_echostr = crypto.verify_url(msg_signature, timestamp, nonce, echostr)
 
-        logger.info("企业微信URL验证成功")
-        return reply_echostr
+        logger.info(f"企业微信URL验证成功，返回: {reply_echostr[:20]}...")
+        
+        # 必须返回 PlainTextResponse，企业微信不接受 JSON 格式
+        return PlainTextResponse(content=reply_echostr, status_code=200)
 
     except WeChatCryptoException as e:
         logger.error(f"URL验证失败: {e}")
