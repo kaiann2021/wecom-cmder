@@ -35,8 +35,9 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     Returns:
         bool: 密码是否匹配
     """
-    # bcrypt limit is 72 bytes, so we need to truncate
-    return pwd_context.verify(plain_password.encode('utf-8')[:72], hashed_password)
+    # bcrypt limit is 72 bytes, truncate and decode back to string
+    truncated = plain_password.encode('utf-8')[:72].decode('utf-8', errors='ignore')
+    return pwd_context.verify(truncated, hashed_password)
 
 
 def get_password_hash(password: str) -> str:
@@ -49,8 +50,9 @@ def get_password_hash(password: str) -> str:
     Returns:
         str: 密码哈希
     """
-    # bcrypt limit is 72 bytes, so we need to truncate
-    return pwd_context.hash(password.encode('utf-8')[:72])
+    # bcrypt limit is 72 bytes, truncate and decode back to string
+    truncated = password.encode('utf-8')[:72].decode('utf-8', errors='ignore')
+    return pwd_context.hash(truncated)
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:

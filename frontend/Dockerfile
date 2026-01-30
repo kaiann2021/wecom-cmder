@@ -18,6 +18,12 @@ RUN npm run build
 # 生产阶段
 FROM nginx:alpine as production-stage
 
+# 设置时区为上海
+ENV TZ=Asia/Shanghai
+RUN apk add --no-cache tzdata \
+    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
+    && echo $TZ > /etc/timezone
+
 # 复制构建产物
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 
