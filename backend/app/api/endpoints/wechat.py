@@ -57,11 +57,11 @@ def get_wechat_config(db: Session = Depends(get_db)) -> WeChatConfig:
     if not configs.get("corp_id") or not configs.get("app_secret") or not configs.get("agent_id"):
         raise HTTPException(status_code=500, detail="企业微信配置不完整")
 
-    # 构建配置对象
+    # 构建配置对象（确保字符串类型）
     return WeChatConfig(
-        corp_id=configs.get("corp_id", ""),
-        app_secret=configs.get("app_secret", ""),
-        agent_id=configs.get("agent_id", ""),
+        corp_id=str(configs.get("corp_id", "")),
+        app_secret=str(configs.get("app_secret", "")),
+        agent_id=str(configs.get("agent_id", "")),
         token=configs.get("token"),
         encoding_aes_key=configs.get("encoding_aes_key"),
         admin_users=configs.get("admin_users", []) if isinstance(configs.get("admin_users"), list) else [],

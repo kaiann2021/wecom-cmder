@@ -1,6 +1,19 @@
 # WeCom Commander - 企业微信指令管理系统
 
+![Docker Build](https://github.com/kaiann2021/wecom-cmder/actions/workflows/docker-build.yml/badge.svg)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Python](https://img.shields.io/badge/python-3.11-blue.svg)
+
 基于 MoviePilot 项目精简而来，专注于企业微信集成功能，提供一个轻量级的企业微信指令管理和消息推送系统。
+
+## 预构建 Docker 镜像
+
+项目提供预构建的 Docker 镜像，支持 amd64 和 arm64 架构：
+
+- **Backend**: `ghcr.io/kaiann2021/wecom-cmder/backend:latest`
+- **Frontend**: `ghcr.io/kaiann2021/wecom-cmder/frontend:latest`
+
+查看所有可用版本：[GitHub Packages](https://github.com/kaiann2021/wecom-cmder/pkgs/container/wecom-cmder%2Fbackend)
 
 ## 核心功能
 
@@ -18,20 +31,51 @@
 
 ## 快速开始
 
-### 使用 Docker Compose（推荐）
+### 方式一：使用预构建镜像（最快）
 
 ```bash
 # 克隆代码
 git clone https://github.com/kaiann2021/wecom-cmder.git
 cd wecom-cmder
 
+# 创建 docker-compose.override.yml 使用预构建镜像
+cat > docker-compose.override.yml << 'EOF'
+version: '3.8'
+
+services:
+  backend:
+    image: ghcr.io/kaiann2021/wecom-cmder/backend:latest
+    build: null
+  
+  frontend:
+    image: ghcr.io/kaiann2021/wecom-cmder/frontend:latest
+    build: null
+EOF
+
 # 启动服务
 docker-compose up -d
 
 # 查看日志
 docker-compose logs -f backend
+```
 
-# 停止服务
+### 方式二：本地构建镜像
+
+```bash
+# 克隆代码
+git clone https://github.com/kaiann2021/wecom-cmder.git
+cd wecom-cmder
+
+# 构建并启动服务
+docker-compose up -d --build
+
+# 查看日志
+docker-compose logs -f backend
+```
+
+### 停止服务
+
+```bash
 docker-compose down
 ```
 

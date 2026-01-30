@@ -68,8 +68,8 @@ async def get_wechat_config(
                     configs[key.replace("wechat.", "")] = config.value
 
         return WeChatConfigResponse(
-            corp_id=configs.get("corp_id", ""),
-            agent_id=configs.get("agent_id", ""),
+            corp_id=str(configs.get("corp_id", "")),
+            agent_id=str(configs.get("agent_id", "")),
             proxy="https://qyapi.weixin.qq.com",
             admin_users=configs.get("admin_users", []) if isinstance(configs.get("admin_users"), list) else [],
             has_token=bool(configs.get("token")),
@@ -127,8 +127,8 @@ async def update_wechat_config(
         logger.info("企业微信配置更新成功")
 
         return WeChatConfigResponse(
-            corp_id=config.corp_id,
-            agent_id=config.agent_id,
+            corp_id=str(config.corp_id),
+            agent_id=str(config.agent_id),
             proxy=config.proxy,
             admin_users=config.admin_users,
             has_token=bool(config.token),
